@@ -71,17 +71,25 @@ export default class App extends React.Component {
 
   onCloseForm = () => {
     this.setState({
-      isDisplayForm: false
+      isDisplayForm: false,
+      taskEditItem: null //clear data
     })
   }
 
   onHandleSubmit = (data) => {
     var {tasks} = this.state;
     console.log(data);
-    data.id = this.generateID();
-    tasks.push(data);
+    if(data.id === ''){
+      data.id = this.generateID();
+      tasks.push(data);
+    } else {
+      //Editing
+      var index = this.findIndex(data.id);
+      tasks[index] = data;
+    }
     this.setState({
-      tasks: tasks
+      tasks: tasks,
+      taskEditItem:null
     })
 
     // đưa vào localStorage để lưu trữ mỗi lần load lại trang
@@ -151,7 +159,7 @@ export default class App extends React.Component {
         <TaskForm 
           onCloseForm = { this.onCloseForm } 
           onHandleSubmit = { this.onHandleSubmit }
-          task = { taskEditItem }
+          taskEditItem = { taskEditItem }
         /> 
       : 
        '';

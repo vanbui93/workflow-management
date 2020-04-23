@@ -12,15 +12,27 @@ export default class TaskForm extends Component {
   
   //khi component được gắn vào thì gọi cwm
   componentWillMount() {
-    //kiểm tra nếu có chỉnh sửa item, thì gắn giá trị cần chỉnh sửa vào form
+    console.log(this.props);
+    
+    //kiểm tra nếu có chỉnh sửa item (có id), thì gắn giá trị cần chỉnh sửa vào form
     if(this.props.taskEditItem) {
       this.setState({
         id: this.props.taskEditItem.id,
         name: this.props.taskEditItem.name,
         status: this.props.taskEditItem.status
       })
-      console.log(this.props.taskEditItem.id);
-      
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // console.log(nextProps); gọi lại để sử dụng
+    
+    if(nextProps && nextProps.taskEditItem) {
+      this.setState({
+        id: nextProps.taskEditItem.id,
+        name: nextProps.taskEditItem.name,
+        status: nextProps.taskEditItem.status
+      })
     }
   }
   
@@ -51,15 +63,18 @@ export default class TaskForm extends Component {
     this.setState({
       name:'',
       status: false
-    })
+    });
+    this.onCloseForm();
   }
 
   render() {
+    var {id} = this.state;
+    
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
           <h3 className="panel-title">
-            <span className="mr-2">Thêm Công Việc</span>
+            <span className="mr-2">{ id !== '' ? 'Cập nhật công việc' : 'Thêm Công Việc'}</span>
             <i className="fa fa-times" aria-hidden="true" 
             onClick={ this.onCloseForm }
             />
@@ -89,7 +104,7 @@ export default class TaskForm extends Component {
             </select>
             <br />
             <div className="text-center">
-              <button type="submit" className="btn btn-warning">Thêm</button>&nbsp;
+              <button type="submit" className="btn btn-warning">{ this.props.taskEditItem ? 'Cập nhật' :'Thêm'}</button>&nbsp;
               <button type="button" className="btn btn-danger" onClick={this.onClear}>Hủy Bỏ</button>
             </div>
           </form>
