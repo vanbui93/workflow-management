@@ -9,9 +9,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [
-        
-      ]
+      tasks: [],
+      isDisplayForm: false
     }
   }
 
@@ -23,10 +22,8 @@ export default class App extends React.Component {
         tasks: tasks
       })
     }
-    
   }
   
-
   random = () => {
     return Math.floor((1+Math.random()) * 0x10000).toString(16).substring(1)
   }
@@ -34,7 +31,7 @@ export default class App extends React.Component {
   generateID = () => {
     return this.random() + this.random() + '-' +this.random() + '-' + this.random() + '-' + this.random() + '-' + this.random() + '-' + this.random() + '-' + this.random();
   }
-  
+
   onGenerateData = () => {
     var tasks = [
       {
@@ -65,8 +62,38 @@ export default class App extends React.Component {
     
   }
 
-  render() {
+  onChangeForm = () => {
+    this.setState({
+      isDisplayForm: !this.state.isDisplayForm
+    })
+  }
+
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm: false
+    })
+  }
+
+  onHandleSubmit = (data) => {
     var {tasks} = this.state;
+    console.log(data);
+    data.id = this.generateID();
+    tasks.push(data);
+    this.setState({
+      tasks: tasks
+    })
+
+    // đưa vào localStorage để lưu trữ mỗi lần load lại trang
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }
+
+  render() {
+    var {tasks, isDisplayForm} = this.state;
+    var elmTaskForm = isDisplayForm === true ? 
+      <TaskForm 
+        onCloseForm = { this.onCloseForm }
+        onHandleSubmit = { this.onHandleSubmit }
+    /> : '';
     return (
       <div className="container">
         <div className="text-center">
@@ -74,11 +101,11 @@ export default class App extends React.Component {
           <hr />
         </div>
         <div className="row">
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <TaskForm />
+          <div className="col-4">
+            {elmTaskForm}
           </div>
-          <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <button type="button" className="btn btn-primary mb-3 mr-2"><i className="fa fa-plus mr-2"/>Thêm Công Việc</button>
+          <div className={ isDisplayForm ? 'col-8' : 'col-12' }>
+            <button type="button" className="btn btn-primary mb-3 mr-2" onClick={ this.onChangeForm }><i className="fa fa-plus mr-2"/>Thêm Công Việc</button>
             <button type="button" className="btn btn-danger mb-3" onClick={() => this.onGenerateData()}><i className="fa fa-plus mr-2"/>Generate data</button>
             <Control/>
             <div className="row mt-15">

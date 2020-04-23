@@ -40,3 +40,6 @@
 .active {
   border: 3px solid #000;
 }
+.fa-times {
+  cursor: pointer;
+}

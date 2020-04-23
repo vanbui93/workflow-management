@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class TaskItem extends Component {
   render() {
     var {task,index} = this.props;
-    console.log(task.status);
+    // console.log(task.status);
     
     return (
       <tr>
