@@ -10,7 +10,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       tasks: [],
-      isDisplayForm: false
+      isDisplayForm: false,
+      taskEditItem: null
     }
   }
 
@@ -103,7 +104,7 @@ export default class App extends React.Component {
   findIndex = (id) => {
     var {tasks} = this.state;
     var result = -1;
-    tasks.map((task, index) => {
+    tasks.forEach((task, index) => {
       if(task.id === id){ // kiểm tra id bằng id truyền từ TaskItem vào, thì trả về vị trí index
         result = index;
       }
@@ -124,13 +125,37 @@ export default class App extends React.Component {
     this.onCloseForm();
   }
 
+  //khi click button sửa thì show form ra
+  onShowForm = () => {
+    this.setState({
+      isDisplayForm: true
+    })
+  }
+
+  onUpdate = (id) => {
+    var {tasks} = this.state;
+    var index = this.findIndex(id);
+    var taskEditItem = tasks[index];
+    this.setState({
+      taskEditItem: taskEditItem
+    })
+    
+    //mở form khi click vào sửa
+    this.onShowForm()
+  }
+
   render() {
-    var {tasks, isDisplayForm} = this.state;
-    var elmTaskForm = isDisplayForm === true ? 
-      <TaskForm 
-        onCloseForm = { this.onCloseForm }
-        onHandleSubmit = { this.onHandleSubmit }
-    /> : '';
+    var {tasks, isDisplayForm, taskEditItem} = this.state;
+    var elmTaskForm = isDisplayForm === true 
+      ? 
+        <TaskForm 
+          onCloseForm = { this.onCloseForm } 
+          onHandleSubmit = { this.onHandleSubmit }
+          task = { taskEditItem }
+        /> 
+      : 
+       '';
+
     return (
       <div className="container">
         <div className="text-center">
@@ -147,7 +172,12 @@ export default class App extends React.Component {
             <Control/>
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList tasks={tasks} onUpdateStatus = { this.onUpdateStatus } onDelete = {this.onDelete}/>
+                <TaskList 
+                  tasks={tasks} 
+                  onUpdateStatus = { this.onUpdateStatus } 
+                  onDelete = {this.onDelete}
+                  onUpdate = {this.onUpdate}
+                />
               </div>
             </div>
           </div>

@@ -12,6 +12,11 @@ export default class TaskItem extends Component {
     this.props.onDelete(this.props.task.id);
   }
 
+  onUpdate = () => {
+    // console.log(this.props.task.id);
+    this.props.onUpdate(this.props.task.id);
+  }
+
   render() {
     var {task,index} = this.props;
     // console.log(task.status);
@@ -28,7 +33,11 @@ export default class TaskItem extends Component {
           </span>
         </td>
         <td className="text-center">
-          <button type="button" className="btn btn-warning mr-3"><i className="fa fa-pencil mr-2" />Sửa</button>
+          <button type="button" className="btn btn-warning mr-3"
+            onClick = { this.onUpdate }
+          >
+            <i className="fa fa-pencil mr-2" />Sửa
+          </button>
           <button type="button" className="btn btn-danger"
             onClick={this.onDelete}
           >

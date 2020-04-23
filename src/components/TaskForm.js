@@ -4,12 +4,26 @@ export default class TaskForm extends Component {
   constructor(props) {
     super(props);
     this.state ={
+      id:'',
       name:'',
       status: false
     }
   }
   
-
+  //khi component được gắn vào thì gọi cwm
+  componentWillMount() {
+    //kiểm tra nếu có chỉnh sửa item, thì gắn giá trị cần chỉnh sửa vào form
+    if(this.props.taskEditItem) {
+      this.setState({
+        id: this.props.taskEditItem.id,
+        name: this.props.taskEditItem.name,
+        status: this.props.taskEditItem.status
+      })
+      console.log(this.props.taskEditItem.id);
+      
+    }
+  }
+  
   onCloseForm =() => {
     this.props.onCloseForm();
   }
