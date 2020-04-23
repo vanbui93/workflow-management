@@ -32,35 +32,35 @@ export default class App extends React.Component {
     return this.random() + this.random() + '-' +this.random() + '-' + this.random() + '-' + this.random() + '-' + this.random() + '-' + this.random() + '-' + this.random();
   }
 
-  onGenerateData = () => {
-    var tasks = [
-      {
-        id: this.generateID(),
-        name:"hoc lap trinh",
-        status: true
-      },
-      {
-        id: this.generateID(),
-        name:"hoc lap do hoa",
-        status: true
-      },
-      {
-        id: this.generateID(),
-        name:"hoc react",
-        status: false
-      }
-    ];
-    // console.log(tasks);
-    this.setState({
-      tasks: tasks
-    })
+  // onGenerateData = () => {
+  //   var tasks = [
+  //     {
+  //       id: this.generateID(),
+  //       name:"hoc lap trinh",
+  //       status: true
+  //     },
+  //     {
+  //       id: this.generateID(),
+  //       name:"hoc lap do hoa",
+  //       status: true
+  //     },
+  //     {
+  //       id: this.generateID(),
+  //       name:"hoc react",
+  //       status: false
+  //     }
+  //   ];
+  //   // console.log(tasks);
+  //   this.setState({
+  //     tasks: tasks
+  //   })
 
-    //gán dữ liệu cho localStorage
-    localStorage.setItem(
-      'tasks', JSON.stringify(tasks)
-    )
+  //   //gán dữ liệu cho localStorage
+  //   localStorage.setItem(
+  //     'tasks', JSON.stringify(tasks)
+  //   )
     
-  }
+  // }
 
   onChangeForm = () => {
     this.setState({
@@ -87,6 +87,43 @@ export default class App extends React.Component {
     localStorage.setItem('tasks', JSON.stringify(tasks))
   }
 
+  onUpdateStatus = (id) => {
+    // console.log(id);
+    var {tasks} = this.state;
+    var index = this.findIndex(id);
+    if (index !== -1) {
+      tasks[index].status = ! tasks[index].status;
+      this.setState({
+        tasks: tasks
+      });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+  }
+
+  findIndex = (id) => {
+    var {tasks} = this.state;
+    var result = -1;
+    tasks.map((task, index) => {
+      if(task.id === id){ // kiểm tra id bằng id truyền từ TaskItem vào, thì trả về vị trí index
+        result = index;
+      }
+    });
+    return result;
+  }
+
+  onDelete = (id) => {
+    var {tasks} = this.state;
+    var index = this.findIndex(id);
+    if (index !== -1) {
+      tasks.splice(index,1);
+      this.setState({
+        tasks: tasks
+      });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+    this.onCloseForm();
+  }
+
   render() {
     var {tasks, isDisplayForm} = this.state;
     var elmTaskForm = isDisplayForm === true ? 
@@ -106,11 +143,11 @@ export default class App extends React.Component {
           </div>
           <div className={ isDisplayForm ? 'col-8' : 'col-12' }>
             <button type="button" className="btn btn-primary mb-3 mr-2" onClick={ this.onChangeForm }><i className="fa fa-plus mr-2"/>Thêm Công Việc</button>
-            <button type="button" className="btn btn-danger mb-3" onClick={() => this.onGenerateData()}><i className="fa fa-plus mr-2"/>Generate data</button>
+            {/* <button type="button" className="btn btn-danger mb-3" onClick={() => this.onGenerateData()}><i className="fa fa-plus mr-2"/>Generate data</button> */}
             <Control/>
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList tasks={tasks}/>
+                <TaskList tasks={tasks} onUpdateStatus = { this.onUpdateStatus } onDelete = {this.onDelete}/>
               </div>
             </div>
           </div>

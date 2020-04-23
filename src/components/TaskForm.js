@@ -36,7 +36,7 @@ export default class TaskForm extends Component {
   onClear = () => {
     this.setState({
       name:'',
-      state: false
+      status: false
     })
   }
 
