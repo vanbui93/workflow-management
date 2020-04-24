@@ -63,10 +63,21 @@ export default class App extends React.Component {
     
   // }
 
-  onChangeForm = () => {
-    this.setState({
-      isDisplayForm: !this.state.isDisplayForm
-    })
+  // Xử lý khi nhấp vào button thêm mới, kiểm tra nếu trước đó bấm vào 'sửa button' -> 'thêm mới button', thì TH1, vẫn cho hiển thị form và reset giá trị form
+  onToggleForm = () => {
+    //Trường hợp 'sửa button' -> 'thêm mới button'
+    if(this.state.isDisplayForm && this.state.taskEditItem !==null) {
+      console.log('th1');
+      this.setState({
+        isDisplayForm: true,
+        taskEditItem: null
+      });
+    } else { // trường hợp 'thêm mới button' ban đầu
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm,
+        taskEditItem: null
+      })
+    }
   }
 
   onCloseForm = () => {
@@ -152,6 +163,10 @@ export default class App extends React.Component {
     this.onShowForm()
   }
 
+  componentWillUnmount() {
+    console.log('Component WILL UNMOUNT!')
+ }
+
   render() {
     var {tasks, isDisplayForm, taskEditItem} = this.state;
     var elmTaskForm = isDisplayForm === true 
@@ -175,7 +190,7 @@ export default class App extends React.Component {
             {elmTaskForm}
           </div>
           <div className={ isDisplayForm ? 'col-8' : 'col-12' }>
-            <button type="button" className="btn btn-primary mb-3 mr-2" onClick={ this.onChangeForm }><i className="fa fa-plus mr-2"/>Thêm Công Việc</button>
+            <button type="button" className="btn btn-primary mb-3 mr-2" onClick={ this.onToggleForm }><i className="fa fa-plus mr-2"/>Thêm Công Việc</button>
             {/* <button type="button" className="btn btn-danger mb-3" onClick={() => this.onGenerateData()}><i className="fa fa-plus mr-2"/>Generate data</button> */}
             <Control/>
             <div className="row mt-15">

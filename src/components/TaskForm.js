@@ -26,12 +26,18 @@ export default class TaskForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     // console.log(nextProps); gọi lại để sử dụng
-    
     if(nextProps && nextProps.taskEditItem) {
       this.setState({
         id: nextProps.taskEditItem.id,
         name: nextProps.taskEditItem.name,
         status: nextProps.taskEditItem.status
+      })
+    } else if(nextProps && nextProps.taskEditItem === null) {
+      // console.log('sửa btn -> thêm mới btn');
+      this.setState({
+        id:'',
+        name:'',
+        status: false
       })
     }
   }
