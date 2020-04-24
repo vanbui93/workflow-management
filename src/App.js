@@ -11,7 +11,11 @@ export default class App extends React.Component {
     this.state = {
       tasks: [],
       isDisplayForm: false,
-      taskEditItem: null
+      taskEditItem: null,
+      filter: {
+        name: '',
+        status: -1
+      }
     }
   }
 
@@ -167,12 +171,46 @@ export default class App extends React.Component {
     console.log('Component WILL UNMOUNT!')
  }
 
+ //Lọc
+ onFilter = (filterName,filterStatus) => {
+  console.log(filterName,filterStatus); 
+  // console.log(typeof FilterStatus); //kiểm tra kiểu dữ liệu
+  filterStatus = parseInt(filterStatus,10); // chuyển qua kiểu number
+
+  //cập nhật lại state của task
+  this.setState({
+    filter: {
+      name: filterName.toLowerCase(), //Chuyển mọi kí tự thành chữ thường
+      status: filterStatus
+    }
+  })
+ }
+
   render() {
-    var {tasks, isDisplayForm, taskEditItem} = this.state;
+    var {tasks, isDisplayForm, taskEditItem,filter} = this.state;
+    
+    //Tiến hành render kết quả
+    if(filter) { //Nếu tồn tại biến filter
+      if(filter.name !=='') {   //kiểm tra nếu filter có giá trị, tức nếu người dùng nhập
+        tasks = tasks.filter((taskFilter) => {
+          return taskFilter.name.toLowerCase().indexOf(filter.name) !== -1; //indexOf trả về vị trí đầu tiên của 1 chuỗi, #-1 nghĩa là có tìm thấy giá trị filter
+        })
+      }
+      // ở status ko cần kiểm tra vì mặc định đã có giá trị
+      tasks = tasks.filter((taskFilter) => {
+        if(filter.status === -1) { // nếu status === -1 thì trả về tất cả, do set state từ trước
+          return taskFilter
+        } else {
+          return taskFilter.status === (filter.status === 1 ? true : false) // nếu status : 1 thì true, ngược lại false
+        }
+      })
+    }
+    
+    
     var elmTaskForm = isDisplayForm === true 
       ? 
         <TaskForm 
-          onCloseForm = { this.onCloseForm } 
+          onCloseForm = { this.onCloseForm }
           onHandleSubmit = { this.onHandleSubmit }
           taskEditItem = { taskEditItem }
         /> 
@@ -200,6 +238,7 @@ export default class App extends React.Component {
                   onUpdateStatus = { this.onUpdateStatus } 
                   onDelete = {this.onDelete}
                   onUpdate = {this.onUpdate}
+                  onFilter = {this.onFilter}
                 />
               </div>
             </div>
