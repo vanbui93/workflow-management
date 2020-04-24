@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
+import Search from './Search'
 
 export default class Control extends Component {
   render() {
     return (
       <div className="row mt-15">
-        <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 mb-3">
-          <form className="form-inline">
-            <div className="form-group">
-              <input type="text" className="form-control mr-3" placeholder="Nhập từ khóa..." />
-              <button className="btn btn-primary" type="button"><i className="fa fa-search mr-2" />Tìm</button>
-            </div>
-          </form>
-        </div>
+        <Search onSearch={this.props.onSearch} />
         <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
           <div className="dropdown">
             <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Sắp Xếp</button>

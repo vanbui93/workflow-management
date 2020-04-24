@@ -15,7 +15,8 @@ export default class App extends React.Component {
       filter: {
         name: '',
         status: -1
-      }
+      },
+      keyword:''
     }
   }
 
@@ -186,8 +187,15 @@ export default class App extends React.Component {
   })
  }
 
+ onSearch = (keyword) => {
+  //  console.log(keyword);
+  this.setState({
+    keyword: keyword
+  })
+ }
+
   render() {
-    var {tasks, isDisplayForm, taskEditItem,filter} = this.state;
+    var {tasks, isDisplayForm, taskEditItem,filter,keyword} = this.state;
     
     //Tiến hành render kết quả
     if(filter) { //Nếu tồn tại biến filter
@@ -203,6 +211,12 @@ export default class App extends React.Component {
         } else {
           return taskFilter.status === (filter.status === 1 ? true : false) // nếu status : 1 thì true, ngược lại false
         }
+      })
+    }
+
+    if(keyword){
+      tasks = tasks.filter((taskFilter) => {
+        return taskFilter.name.toLowerCase().indexOf(keyword) !== -1; //indexOf trả về vị trí của 1 chuỗi
       })
     }
     
@@ -230,7 +244,7 @@ export default class App extends React.Component {
           <div className={ isDisplayForm ? 'col-8' : 'col-12' }>
             <button type="button" className="btn btn-primary mb-3 mr-2" onClick={ this.onToggleForm }><i className="fa fa-plus mr-2"/>Thêm Công Việc</button>
             {/* <button type="button" className="btn btn-danger mb-3" onClick={() => this.onGenerateData()}><i className="fa fa-plus mr-2"/>Generate data</button> */}
-            <Control/>
+            <Control onSearch={this.onSearch}/>
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <TaskList 
