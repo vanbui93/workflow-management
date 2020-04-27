@@ -3,6 +3,7 @@ import './App.css';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import Control from './components/Control';
+import _ from 'lodash'
 
 export default class App extends React.Component {
   
@@ -117,7 +118,10 @@ export default class App extends React.Component {
   onUpdateStatus = (id) => {
     // console.log(id);
     var {tasks} = this.state;
-    var index = this.findIndex(id);
+    // var index = this.findIndex(id);
+    var index = _.findIndex(tasks, (task) => {
+      return task.id === id;
+    })
     if (index !== -1) {
       tasks[index].status = ! tasks[index].status;
       this.setState({
@@ -225,12 +229,14 @@ export default class App extends React.Component {
       })
     }
 
-    if(keyword){
-      tasks = tasks.filter((taskFilter) => {
-        return taskFilter.name.toLowerCase().indexOf(keyword) !== -1; //indexOf trả về vị trí của 1 chuỗi
-      })
-    }
-    
+    // if(keyword){
+    //   tasks = tasks.filter((taskFilter) => {
+    //     return taskFilter.name.toLowerCase().indexOf(keyword) !== -1; //indexOf trả về vị trí của 1 chuỗi
+    //   })
+    // }
+    tasks = _.filter(tasks, (task) => { 
+      return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !==-1; 
+    });
     
     var elmTaskForm = isDisplayForm === true 
       ? 
