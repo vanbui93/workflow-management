@@ -196,7 +196,7 @@ export default class App extends React.Component {
   })
  }
 
- onSort = (sortBy,sortValue) => {
+ onClickSort = (sortBy,sortValue) => {
   this.setState({
     sortBy:sortBy,
     sortValue:sortValue
@@ -242,18 +242,18 @@ export default class App extends React.Component {
       : 
        '';
 
-    if(sortBy === 'name'){
+    if(sortBy === 'name'){  // sort theo name
       tasks.sort((a,b) => {
         if(a.name >b.name) return sortValue;
         else if(a.name < b.name) return -sortValue;
         else return 0;
-      })
+      });
     } else { // sort theo status
       tasks.sort((a,b) => {
-        if(a.status >b.status) return -sortValue;
-        else if(a.name < b.name) return sortValue;
+        if(a.status >b.status) return -sortValue; //nếu return -1 thì 'name' tăng dần, trả về sortValue (đã set giá trị rồi) chứ ko set cứng
+        else if(a.name < b.name) return sortValue; //nếu return 1 thì 'name' giảm dần
         else return 0;
-      })
+      });
     }
 
     return (
@@ -271,7 +271,7 @@ export default class App extends React.Component {
             {/* <button type="button" className="btn btn-danger mb-3" onClick={() => this.onGenerateData()}><i className="fa fa-plus mr-2"/>Generate data</button> */}
             <Control 
               onSearch={this.onSearch}
-              onSort={this.onSort}
+              onClickSort={this.onClickSort}
               sortBy={sortBy}
               sortValue={sortValue}
             />

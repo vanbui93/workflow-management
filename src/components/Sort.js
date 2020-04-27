@@ -7,7 +7,7 @@ export default class Sort extends Component {
   // }
 
   onClickSort = (sortBy, sortValue) => {
-    this.props.onSort(sortBy, sortValue) //props ban đầu (App -> Sort)
+    this.props.onClickSort(sortBy, sortValue) //props ban đầu (App -> Sort)
     console.log(sortBy,sortValue); //sau khi truyền ngược lại props (Sort.js -> App.js -> Sort.js)
     
     
@@ -20,34 +20,33 @@ export default class Sort extends Component {
           <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Sắp Xếp</button>
           <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li onClick={()=> this.onClickSort('name',1)}>
-              <a role="button"
+              <button
                 className={(this.props.sortBy === 'name' && this.props.sortValue === 1) ? 'sort-selected' : ''}
               >
                 <i className="fa fa-sort-alpha-asc pr-5">Tên A-Z</i>
-              </a>
+              </button>
             </li>
             <li onClick={()=> this.onClickSort('name',-1)}>
-              <a role="button"
+              <button
                 className={(this.props.sortBy ==='name' && this.props.sortValue === -1) ? 'sort-selected' : ''}
               >
                 <i className="fa fa-sort-alpha-desc pr-5">Tên Z-A</i>
-              </a>
+              </button>
             </li>
             <li role="separator" className="divider" />
             <li  onClick={()=> this.onClickSort('status',1)}>
-              <a 
-                role="button"
+              <button
                 className={(this.props.sortBy ==='status' && this.props.sortValue === 1) ? 'sort-selected' : ''}
                 >
                 Trạng Thái Kích Hoạt
-              </a>
+              </button>
             </li>
             <li onClick={()=> this.onClickSort('status',-1)}>
-              <a role="button"
+              <button
                 className={(this.props.sortBy ==='status' && this.props.sortValue === -1) ? 'sort-selected' : ''}
               >
                 Trạng Thái Ẩn
-              </a>
+              </button>
             </li>
           </ul>
         </div>
