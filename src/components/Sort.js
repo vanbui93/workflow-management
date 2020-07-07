@@ -9,8 +9,6 @@ export default class Sort extends Component {
   onClickSort = (sortBy, sortValue) => {
     this.props.onClickSort(sortBy, sortValue) //props ban đầu (App -> Sort)
     console.log(sortBy,sortValue); //sau khi truyền ngược lại props (Sort.js -> App.js -> Sort.js)
-    
-    
   }
 
   render() {    

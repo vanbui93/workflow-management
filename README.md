@@ -1,4 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+REACT JS - code được viết trong khi học reactjs của senior nghiepuit
+Kênh youtube : https://www.youtube.com/channel/UCxRgDi15EJsB2ayyP-eg3Tg
 
 ## Available Scripts
 
